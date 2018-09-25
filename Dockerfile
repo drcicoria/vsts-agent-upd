@@ -10,20 +10,23 @@ RUN mkdir -p /usr/local/nvm
 ENV NVM_DIR /usr/local/nvm
 ENV NODE_VERSION=${NODE_VERSION}
 
+RUN npm i -g npm@${NPM_VERSION}
+
 RUN curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 
 RUN . $NVM_DIR/nvm.sh \
     && nvm install $NODE_VERSION \
     && nvm alias default $NODE_VERSION \
-    && nvm use default
+    && nvm use default \
+    && npm i -g npm@${NPM_VERSION}
 
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH      $NVM_DIR/v$NODE_VERSION/bin:$PATH
 
 RUN echo "node anv npm versions" && node -v && npm -v
-RUN npm i -g npm@${NPM_VERSION}
+#RUN npm i -g npm@${NPM_VERSION}
 
-RUN echo "node anv npm versions" && node -v && npm -v
+#RUN echo "node anv npm versions" && node -v && npm -v
 
 # Install az
 ARG UPD_CLI="yes"
